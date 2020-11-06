@@ -4,7 +4,7 @@ _addon.version = "1.0"
 _addon.command= "bubble"
 
 local packets = require('packets')
-local Offset_Location = ""
+local Offset_Location = "Side"
 local tBubbles = {
 	798, 799, 800, 801, 802,
 	803, 804, 805, 806, 807,
@@ -111,8 +111,6 @@ function GetDirection(rotation)
 
 end
 
-		--north = +z, south = -z, east = +x, west = -x
-		--east = 0,  s = 60, w = 120, n = 180
 function BuildSideOffset(direction)
 
 	local offset = {["X"] = 0, ["Z"] = 0}
