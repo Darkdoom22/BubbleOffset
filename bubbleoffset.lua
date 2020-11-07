@@ -1,10 +1,10 @@
 _addon.name = "BubbleOffset"
 _addon.author = "Uwu/Darkdoom"
-_addon.version = "1.0"
+_addon.version = "1.1"
 _addon.command= "bubble"
 
 local packets = require('packets')
-local Offset_Location = "Side"
+local Offset_Location = "Front"
 local tBubbles = {
 	798, 799, 800, 801, 802,
 	803, 804, 805, 806, 807,
@@ -111,104 +111,106 @@ function GetDirection(rotation)
 
 end
 
-function BuildSideOffset(direction)
+function BuildSideOffset(direction, mob_size, mob_scale)
 
 	local offset = {["X"] = 0, ["Z"] = 0}
-
+	local scalar = (mob_size/2)*mob_scale
+	
 	if direction == "East" then
 		
-		offset["Z"] = 2.5
+		offset["Z"] = 1.5 + scalar + math.random()
 		return offset
 
 	elseif direction == "Northeast" then
 
-		offset["X"] = -2.5
-		offset["Z"] = 2.5
+		offset["X"] = -1.5 + (scalar*-1) - math.random()
+		offset["Z"] = 1.5 + scalar + math.random()
 		return offset
 
 	elseif direction == "North" then
 
-		offset["X"] = 2.5
+		offset["X"] = 1.5 + scalar + math.random()
 		return offset
 
 	elseif direction == "Northwest" then
 		
-		offset["Z"] = 2.5
-		offset["X"] = 2.5
+		offset["Z"] = 1.5 + scalar + math.random()
+		offset["X"] = 1.5 + scalar + math.random()
 		return offset
 	
 	elseif direction == "West" then
 
-		offset["Z"] = -2.5
+		offset["Z"] = -1.5 + (scalar*-1) - math.random()
 		return offset
 
 	elseif direction == "Southwest" then
 
-		offset["X"] = 2.5
-		offset["Z"] = -2.5
+		offset["X"] = 1.5 + scalar + math.random()
+		offset["Z"] = -1.5 + (scalar*-1) + math.random()
 		return offset
 
 	elseif direction == "South" then
 
-		offset["X"] = -2.5
+		offset["X"] = -1.5 + (scalar*-1) - math.random()
 		return offset
 
 	elseif direction == "Southeast" then
 
-		offset["Z"] = -2.5
-		offset["X"] = -2.5
+		offset["Z"] = -1.5 + (scalar*-1) - math.random()
+		offset["X"] = -1.5 + (scalar*-1) - math.random()
 		return offset
 
 	end
 
 end
 
-function BuildFrontOffset(direction)
+function BuildFrontOffset(direction, mob_size, mob_scale)
 
 	local offset = {["X"] = 0, ["Z"] = 0}
-
+	local scalar = (mob_size/2)*mob_scale
+	
 	if direction == "East" then
 		
-		offset["X"] = 1
+		offset["X"] = 1 + scalar + math.random()
 		return offset
 
 	elseif direction == "Northeast" then
 
-		offset["X"] = 1
-		offset["Z"] = 1
+		offset["X"] = 1 + scalar + math.random()
+		offset["Z"] = 1 + scalar + math.random()
 		return offset
 
 	elseif direction == "North" then
 
-		offset["Z"] = 1
+		offset["Z"] = 1 + scalar + math.random()
 		return offset
 
 	elseif direction == "Northwest" then
 		
-		offset["Z"] = 1
-		offset["X"] = -1
+		offset["Z"] = 1 + scalar + math.random()
+		offset["X"] = -1 + (scalar*-1) - math.random()
 		return offset
 	
 	elseif direction == "West" then
 
-		offset["X"] = -1
+		offset["X"] = -1 + (scalar*-1) - math.random()
 		return offset
 
 	elseif direction == "Southwest" then
 
-		offset["X"] = -1
-		offset["Z"] = -1
+		offset["X"] = -1 + (scalar*-1) - math.random()
+		offset["Z"] = -1 + (scalar*-1) - math.random()
 		return offset
 
 	elseif direction == "South" then
 
-		offset["Z"] = -1
+		offset["Z"] = -1 + (scalar*-1) - math.random()
 		return offset
 
 	elseif direction == "Southeast" then
 
-		offset["Z"] = -1
-		offset["X"] = 1
+		offset["Z"] = -1 + (scalar*-1) - math.random()
+		offset["X"] = 1 + scalar + math.random()
 		return offset
 
 	end
@@ -227,11 +229,11 @@ function OffsetBubble(target, param, category)
 		
 		if Offset_Location == "Front" then
 
-			offset = BuildFrontOffset(mob_direction)
+			offset = BuildFrontOffset(mob_direction, mob.model_size, mob.model_scale)
 		
 		elseif Offset_Location == "Side" then
 
-			offset = BuildSideOffset(mob_direction)
+			offset = BuildSideOffset(mob_direction, mob.model_size, mob.model_scale)
 
 		end
 
