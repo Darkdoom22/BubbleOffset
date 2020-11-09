@@ -64,7 +64,7 @@ windower.register_event('outgoing chunk', function(id, data)
 		if HasValue(tBubbles, action["Param"]) then
 
 			local new_action = OffsetBubble(action["Target"], action["Param"], action["Category"])
-			windower.add_to_chat(124, "Attempting to offset bubble with offsets of " .. "X: " .. new_action["X Offset"] .. " Z: " .. new_action["Z Offset"]) 
+			windower.add_to_chat(124, "Attempting to offset bubble with offsets of " .. "X: " .. new_action["X Offset"] .. " Y: " .. new_action["Y Offset"]) 
 			return packets.build(new_action)
 			
 		end
@@ -112,52 +112,52 @@ function GetDirection(rotation)
 end
 
 function BuildSideOffset(direction, mob_size, mob_scale)
-
-	local offset = {["X"] = 0, ["Z"] = 0}
+	print(mob_size, mob_scale)
+	local offset = {["X"] = 0, ["Y"] = 0}
 	local scalar = (mob_size/2)*mob_scale
 	
 	if direction == "East" then
 		
-		offset["Z"] = 1.5 + scalar + math.random()
+		offset["Y"] = 1 + scalar + math.random()
 		return offset
 
 	elseif direction == "Northeast" then
 
-		offset["X"] = -1.5 + (scalar*-1) - math.random()
-		offset["Z"] = 1.5 + scalar + math.random()
+		offset["X"] = -1 + (scalar*-1) - math.random()
+		offset["Y"] = 1 + scalar + math.random()
 		return offset
 
 	elseif direction == "North" then
 
-		offset["X"] = 1.5 + scalar + math.random()
+		offset["X"] = 1 + scalar + math.random()
 		return offset
 
 	elseif direction == "Northwest" then
 		
-		offset["Z"] = 1.5 + scalar + math.random()
-		offset["X"] = 1.5 + scalar + math.random()
+		offset["Y"] = 1 + scalar + math.random()
+		offset["X"] = 1 + scalar + math.random()
 		return offset
 	
 	elseif direction == "West" then
 
-		offset["Z"] = -1.5 + (scalar*-1) - math.random()
+		offset["Y"] = -1 + (scalar*-1) - math.random()
 		return offset
 
 	elseif direction == "Southwest" then
 
-		offset["X"] = 1.5 + scalar + math.random()
-		offset["Z"] = -1.5 + (scalar*-1) + math.random()
+		offset["X"] = 1 + scalar + math.random()
+		offset["Y"] = -1 + (scalar*-1) + math.random()
 		return offset
 
 	elseif direction == "South" then
 
-		offset["X"] = -1.5 + (scalar*-1) - math.random()
+		offset["X"] = -1 + (scalar*-1) - math.random()
 		return offset
 
 	elseif direction == "Southeast" then
 
-		offset["Z"] = -1.5 + (scalar*-1) - math.random()
-		offset["X"] = -1.5 + (scalar*-1) - math.random()
+		offset["Y"] = -1 + (scalar*-1) - math.random()
+		offset["X"] = -1 + (scalar*-1) - math.random()
 		return offset
 
 	end
@@ -166,9 +166,8 @@ end
 
 function BuildFrontOffset(direction, mob_size, mob_scale)
 
-	local offset = {["X"] = 0, ["Z"] = 0}
+	local offset = {["X"] = 0, ["Y"] = 0}
 	local scalar = (mob_size/2)*mob_scale
-	
 	if direction == "East" then
 		
 		offset["X"] = 1 + scalar + math.random()
@@ -177,17 +176,17 @@ function BuildFrontOffset(direction, mob_size, mob_scale)
 	elseif direction == "Northeast" then
 
 		offset["X"] = 1 + scalar + math.random()
-		offset["Z"] = 1 + scalar + math.random()
+		offset["Y"] = 1 + scalar + math.random()
 		return offset
 
 	elseif direction == "North" then
 
-		offset["Z"] = 1 + scalar + math.random()
+		offset["Y"] = 1 + scalar + math.random()
 		return offset
 
 	elseif direction == "Northwest" then
 		
-		offset["Z"] = 1 + scalar + math.random()
+		offset["Y"] = 1 + scalar + math.random()
 		offset["X"] = -1 + (scalar*-1) - math.random()
 		return offset
 	
@@ -199,17 +198,17 @@ function BuildFrontOffset(direction, mob_size, mob_scale)
 	elseif direction == "Southwest" then
 
 		offset["X"] = -1 + (scalar*-1) - math.random()
-		offset["Z"] = -1 + (scalar*-1) - math.random()
+		offset["Y"] = -1 + (scalar*-1) - math.random()
 		return offset
 
 	elseif direction == "South" then
 
-		offset["Z"] = -1 + (scalar*-1) - math.random()
+		offset["Y"] = -1 + (scalar*-1) - math.random()
 		return offset
 
 	elseif direction == "Southeast" then
 
-		offset["Z"] = -1 + (scalar*-1) - math.random()
+		offset["Y"] = -1 + (scalar*-1) - math.random()
 		offset["X"] = 1 + scalar + math.random()
 		return offset
 
@@ -241,11 +240,11 @@ function OffsetBubble(target, param, category)
 
 			local action = packets.new('outgoing', 0x01A)
 			action["Target"] = target
-			action["Target Index"] = windower.ffxi.get_mob_by_id(target).index
+			action["Target Index"] = mob.index
 			action["Category"] = category
 			action["Param"] = param
 			action["X Offset"] = offset["X"]
-			action["Z Offset"] = offset["Z"]
+			action["Y Offset"] = offset["Y"]
 		
 			return action
 
